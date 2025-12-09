@@ -96,7 +96,7 @@
         for (let i = 0; i < db.length; i += 2) {
           person.element = document.createElement("div")
           person.element.classList.add("person")
-          person.element.innerHTML = `<img src="https://res.cloudinary.com/dvypvyzfe/image/upload/v1764959218/photo-v3-${db[i]}.png"><p>${db[i+1]}</p>`
+          person.element.innerHTML = `<img src="https://res.cloudinary.com/dvypvyzfe/image/upload/${db[i]}.png"><p>${db[i+1]}</p>`
           app.appendChild(person.element)
         }
         input.addEventListener("input", () => {
