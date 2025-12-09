@@ -90,7 +90,8 @@
     <script>
       (async function() {
         try {
-          let database = await (await fetch("/gp-photos-db.json")).json()
+          let database = await (await fetch("/gp-photos-db.txt")).text()
+          database = database.split("|")
           let app = document.getElementById("app")
           let input = document.getElementById("input")
           let noresult = document.getElementById("noresult")
