@@ -89,35 +89,39 @@
     </div>
     <script>
       (async function() {
-        let db = await (await fetch("/gp-photo-db.json")).json()
-        let app = document.getElementById("app")
-        let input = document.getElementById("input")
-        let noresult = document.getElementById("noresult")
-        for (let i = 0; i < db.length; i += 2) {
-          person.element = document.createElement("div")
-          person.element.classList.add("person")
-          person.element.innerHTML = `<img src="https://res.cloudinary.com/dvypvyzfe/image/upload/${db[i]}.png"><p>${db[i+1]}</p>`
-          app.appendChild(person.element)
-        }
-        input.addEventListener("input", () => {
-          let matchFound = false
-          for (let person of db) {
-            if (person.name.toLowerCase().includes(input.value.toLowerCase().trim())) {
-              matchFound = true
-              person.element.classList.remove("hidden")
-            } else {
-              person.element.classList.add("hidden")
+        try {
+          let db = await (await fetch("/gp-photos-db.json")).json()
+          let app = document.getElementById("app")
+          let input = document.getElementById("input")
+          let noresult = document.getElementById("noresult")
+          for (let i = 0; i < db.length; i += 2) {
+            person.element = document.createElement("div")
+            person.element.classList.add("person")
+            person.element.innerHTML = `<img src="https://res.cloudinary.com/dvypvyzfe/image/upload/${db[i]}.png"><p>${db[i+1]}</p>`
+            app.appendChild(person.element)
+          }
+          input.addEventListener("input", () => {
+            let matchFound = false
+            for (let person of db) {
+              if (person.name.toLowerCase().includes(input.value.toLowerCase().trim())) {
+                matchFound = true
+                person.element.classList.remove("hidden")
+              } else {
+                person.element.classList.add("hidden")
+              }
             }
-          }
-    
-          if (matchFound) {
-            noresult.classList.add("hidden")
-            app.classList.remove("hidden")
-          } else {
-            app.classList.add("hidden")
-            noresult.classList.remove("hidden")
-          }
-        })
+      
+            if (matchFound) {
+              noresult.classList.add("hidden")
+              app.classList.remove("hidden")
+            } else {
+              app.classList.add("hidden")
+              noresult.classList.remove("hidden")
+            }
+          })
+        } catch(e) {
+          console.error(e)
+        }
       })()
     </script>
   </body>
