@@ -6,127 +6,38 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Full resolution photos for CHS class of 2029">
     <meta name="author" content="CC">
-    <title>CHS Class of 2029 full resolution yearbook photos</title>
+    <title>Schoology Scraper</title>
     <style>
       body {
-        font-size: 15px;
-        margin: 0;
+        padding: 0 30px;
+        background: #f5f5f5;
       }
-      .person {
-        display: inline-block;
-        text-align: center;
-        margin: 5px 5px 30px 5px;
-        vertical-align: top;
-        width: calc(min(50vh,50vw) - 25px);
-        height: calc(min(50vh,50vw) - 30px);
-      }
-      .person img {
+
+      a {
         display: block;
-        margin: 0 auto;
-        height: calc(min(50vh,50vw) - 50px);
+        padding: 15px 20px;
+        margin: 10px 0;
+        background: white;
+        border-radius: 8px;
+        text-decoration: none;
+        color: #333333;
+        box-shadow: 0 0px 4px rgba(0,0,0,0.1);
+        transition: 0.2s;
       }
-      .person p {
-        margin: 3px 0 0 0;
-        font-size: min(3vh,3vw);
-      }
-      .hidden {
-        display: none;
+
+      a:hover {
+        box-shadow: 0 0px 8px rgba(0,0,0,0.15);
+        transform: translateY(-2px);
       }
       .center {
-        text-align: center;
-      }
-      .searchbar {
-        position: sticky;
-        top: 0;
-        left: 0;
-        padding: 10px 10px 20px 10px;
-        width: calc(100% - 20px);
-        font-size: min(3vh,3vw);
-        display: flex;
-        font-size: 20px;
-      }
-      .searchbar .background-blur {
-        position: absolute;
-        top: 0;
-        left: 0;
-        z-index: -1;
-        mask: linear-gradient(black, black, black, transparent);
-        backdrop-filter: blur(10px);
-        width: 100%;
-        height: 100%;
-      }
-      .searchbar input {
-        flex: 1;
-        border: 1px solid #999999;
-        border-radius: 100px;
-        padding: 0 10px;
-        outline: none;
-      }
-      .searchresults {
-        padding: 10px;
+      	text-align: center;
       }
     </style>
   </head>
   <body>
-    <div class="searchbar">
-      <div class="background-blur"></div>
-      <label for="input">Search:&nbsp;</label><input id="input">
-    </div>
-    <div class="searchresults">
-      <div class="center">
-        <div id="app"></div>
-      </div>
-      <div id="noresult" class="hidden">
-        No search results<br>
-        Reasons why people might not show up:
-        <ul>
-          <li>The database currently only lists students in 9th grade in CHS</li>
-          <li>Same name: if two people in FUHSD have the same name, they are most likely not listed in the database</li>
-          <li>Unconventional ID range: I was unable to approximate few people's IDs, especially those who did not have yearbook photos on Schoology.</li>
-          <li>Legal name and nickname conflict: People who go by a nickname may not be in the database</li>
-        </ul>
-      </div>
-    </div>
-    <script>
-      (async function() {
-        try {
-          let database = await (await fetch("/gp-photos-db.txt")).text()
-          database = database.split("|")
-          let app = document.getElementById("app")
-          let input = document.getElementById("input")
-          let noresult = document.getElementById("noresult")
-          let people = []
-          for (let i = 0; i < database.length; i += 2) {
-            let person = document.createElement("div")
-            person.classList.add("person")
-            let url = `https://res.cloudinary.com/dvypvyzfe/image/upload/${database[i]}.png`
-            person.innerHTML = `<img src="${url}"><p>${database[i+1]}</p>`
-            app.appendChild(person)
-            people.push({element:person,name:database[i+1],url:url})
-          }
-          input.addEventListener("input", () => {
-            let matchFound = false
-            for (let person of peopleElements) {
-              if (person.name.toLowerCase().includes(input.value.toLowerCase().trim())) {
-                matchFound = true
-                person.element.classList.remove("hidden")
-              } else {
-                person.element.classList.add("hidden")
-              }
-            }
-      
-            if (matchFound) {
-              noresult.classList.add("hidden")
-              app.classList.remove("hidden")
-            } else {
-              app.classList.add("hidden")
-              noresult.classList.remove("hidden")
-            }
-          })
-        } catch(e) {
-          console.error(e.message)
-        }
-      })()
-    </script>
+    <h1 class="center">Schoology Scraper</h1>
+    <hr><br>
+    <a href="allfuhsd9thgrade.html">All FUHSD 9th Grade</a><br>
+    <a href="gp-photos.html">CHS Full Resolution Photos</a>
   </body>
 </html>
