@@ -1,24 +1,55 @@
+
 <!DOCTYPE html>
 <html>
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Unofficial site with class of 2029's photos">
+    <meta name="description" content="Full resolution photos for CHS class of 2029">
     <meta name="author" content="CC">
-    <meta name="keywords" content="FUHSD, Fremont Union High School District, FHS, Fremont High School, Homestead High School, HHS, Cupertino High School, CHS, Lynbrook High School, LHS, Photo, Photos, Yearbook, Class of 2029, 2029, Freshmen, 9th, 9th grade, ninth grade, Schoology, 2025, 2026">
-    <title>All FUHSD 9th Grade</title>
-    <meta property="og:title" content="All FUHSD 9th Grade Students">
-    <meta property="og:description" content="Unofficial site with class of 2029's photos">
+    <title>CHS Class of 2029 full resolution yearbook photos</title>
     <style>
       body {
+        font-size: 15px;
         margin: 0;
         background-color: #f5f5f5;
       }
+      .person {
+        display: inline-block;
+        text-align: center;
+        margin: 5px 5px 30px 5px;
+        vertical-align: top;
+        width: calc(min(50vh,50vw) - 25px);
+        height: calc(min(50vh,50vw) - 30px);
+      }
+      .person img {
+        display: block;
+        margin: 0 auto;
+        height: calc(min(50vh,50vw) - 50px);
+      }
+      .person p {
+        margin: 3px 0 0 0;
+        font-size: min(3vh,3vw);
+      }
       .hidden {
-        display: none !important;
+        display: none;
       }
       .center {
         text-align: center;
+      }
+      .searchbar-icon {
+      	background-color: #ffffff;
+        border: 0;
+        outline: 0;
+        border-radius: 1000px;
+        padding: 5px;
+        width: 30px;
+        height: 30px;
+        margin: 0;
+        transition: 0.5s;
+      }
+      .searchbar-icon:hover {
+      	background-color: #eeeeee;
+        transition: 0.5s;
       }
       .searchbar {
         position: sticky;
@@ -44,6 +75,7 @@
         padding: 5px 10px;
         outline: none;
         font-size: 15px;
+        border-radius: 1000px;
       }
       .searchbar .searchbar-input {
         background-color: #fff;
@@ -52,52 +84,20 @@
         display: flex;
         border-radius: 1000px;
       }
-      #searchresults {
-        text-align: center;
-      }
-      .person {
-        display: inline-block;
+      .searchresults {
         padding: 10px;
-        text-align: center;
-        cursor: pointer;
-        border-radius: 10px;
-        margin: 10px;
-        width: 200px;
-        transition: 0.3s;
       }
-      .person:hover {
-        background-color: #dfdfdf;
-        transition: 0.3s;
+      .searchbar .background-blur {
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: -1;
+        mask: linear-gradient(black, black, black, transparent);
+        backdrop-filter: blur(10px);
+        width: 100%;
+        height: calc(100% + 10px);
       }
-      .person img {
-        height: 160px;
-        max-width: 200px;
-      }
-      .person p {
-        margin: 0;
-      	display: block;
-      }
-      
-      .searchbar-icon {
-      	background-color: #ffffff;
-        border: 0;
-        outline: 0;
-        border-radius: 1000px;
-        padding: 5px;
-        width: 30px;
-        height: 30px;
-        margin: 0;
-        transition: 0.5s;
-      }
-      .searchbar-icon:hover {
-      	background-color: #eeeeee;
-        transition: 0.5s;
-      }
-      #filter-menu {
-        background-color: #f5f5f5;
-        padding: 30px;
-      }
-     </style>
+    </style>
   </head>
   <body>
     <div class="searchbar">
@@ -107,152 +107,64 @@
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.49,19l-5.73-5.73C15.53,12.2,16,10.91,16,9.5C16,5.91,13.09,3,9.5,3S3,5.91,3,9.5C3,13.09,5.91,16,9.5,16 c1.41,0,2.7-0.47,3.77-1.24L19,20.49L20.49,19z M5,9.5C5,7.01,7.01,5,9.5,5S14,7.01,14,9.5S11.99,14,9.5,14S5,11.99,5,9.5z"></path><path d="M0,0h24v24H0V0z" fill="none"></path></svg>
         </button>
         <input id="input" placeholder="Search...">
-        <button class="searchbar-icon" id="filter-btn">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 17v2h6v-2H3zM3 5v2h10V5H3zm10 16v-2h8v-2h-8v-2h-2v6h2zM7 9v2H3v2h4v2h2V9H7zm14 4v-2H11v2h10zm-6-4h2V7h4V5h-4V3h-2v6z"></path></svg>
-        </button>
       </div>
     </div>
-    <div id="searchresults">
-      <p style="text-align:center">Last updated Oct 3, 17:06:00 (PDT)</p>
-      <div id="app"></div>
+    <div class="searchresults">
+      <div class="center">
+        <div id="app"></div>
+      </div>
       <div id="noresult" class="hidden">
-        No search results
+        No search results<br>
+        Reasons why people might not show up:
+        <ul>
+          <li>The database currently only lists students in 9th grade in CHS</li>
+          <li>Same name: if two people in FUHSD have the same name, they are most likely not listed in the database</li>
+          <li>Unconventional ID range: I was unable to approximate few people's IDs, especially those who did not have yearbook photos on Schoology.</li>
+          <li>Legal name and nickname conflict: People who go by a nickname may not be in the database</li>
+        </ul>
       </div>
     </div>
-    <div id="filter-menu" class="hidden">
-      <label for="checkbox-mvhs">Monta Vista</label><input id="checkbox-mvhs" type="checkbox" data-school="mvhs" checked><br>
-      <label for="checkbox-fhs">Fremont</label><input id="checkbox-fhs" type="checkbox" data-school="fhs" checked><br>
-      <label for="checkbox-hhs">Homestead</label><input id="checkbox-hhs" type="checkbox" data-school="hhs" checked><br>
-      <label for="checkbox-chs">Cupertino</label><input id="checkbox-chs" type="checkbox" data-school="chs" checked><br>
-      <label for="checkbox-lhs">Lynbrook</label><input id="checkbox-lhs" type="checkbox" data-school="lhs" checked><br>
-      <hr>
-      <label for="checkbox-hasphoto">Has Photo</label><input id="checkbox-hasphoto" type="checkbox" data-hasphoto><br>
-    </div>
-    
     <script>addEventListener("error",(e)=>{alert(e.message)})</script>
     <script>
-      let min_data = fetch("allfuhsd9thgrade-v1.json").then((e) => {
-      	e.json().then((e) => {
-          parseMinData(e)
-        }).catch((e) => {
-          alert(e.message)
-        })
-      }).catch((e) => {
-        alert(e.message)
-      })
-      function parseMinData(min_data) { 
-        for (let i = 0; i < min_data.length; i += 4) {
-          let schoolName
-          let schoolID
-          switch (min_data[i]) {
-            case 0:
-              schoolName = "Monta Vista High School"
-              schoolID = "mvhs"
-              break
-              case 1:
-              schoolName = "Fremont High School"
-              schoolID = "fhs"
-              break
-              case 2:
-              schoolName = "Homestead High School"
-              schoolID = "hhs"
-              break
-              case 3:
-              schoolName = "Cupertino High School"
-              schoolID = "chs"
-              break
-              case 4:
-              schoolName = "Lynbrook High School"
-              schoolID = "lhs"
-              break
-              default:
-              schoolName = min_data[i]
-              schoolID = min_data[i]
-              break
+      (async function() {
+        try {
+          let database = await (await fetch("https://schoologyscraper.github.io/gp-photos-db.txt")).text()
+          database = database.split("|")
+          let app = document.getElementById("app")
+          let input = document.getElementById("input")
+          let noresult = document.getElementById("noresult")
+          let people = []
+          for (let i = 0; i < database.length; i += 2) {
+            let person = document.createElement("div")
+            person.classList.add("person")
+            let url = `https://res.cloudinary.com/dvypvyzfe/image/upload/${database[i]}.png`
+            person.innerHTML = `<img src="${url}"><p>${database[i+1]}</p>`
+            app.appendChild(person)
+            people.push({element:person,name:database[i+1],url:url})
           }
-          schoolName = schoolName.match(/[A-Z]/g).join("")
-          let imageURL
-          let hasPhoto = true
-          if (min_data[i+1] === 0) {
-            imageURL = "https://asset-cdn.schoology.com/sites/all/themes/schoology_theme/images/user-default.svg"
-            hasPhoto = false
-          } else {
-            imageURL = `https://asset-cdn.schoology.com/system/files/imagecache/profile_big/pictures/picture-${min_data[i+1]}.jpg`
-          }
-          let url = `https://fuhsd.schoology.com/user/13853${min_data[i+3]}/info`
-          data.push({
-            schoolName: schoolName,
-            image: imageURL,
-            name: min_data[i+2],
-            url: url,
-            schoolID: schoolID,
-            hasPhoto: hasPhoto,
+          input.addEventListener("input", () => {
+            let matchFound = false
+            for (let person of people) {
+              if (person.name.toLowerCase().includes(input.value.toLowerCase().trim())) {
+                matchFound = true
+                person.element.classList.remove("hidden")
+              } else {
+                person.element.classList.add("hidden")
+              }
+            }
+      
+            if (matchFound) {
+              noresult.classList.add("hidden")
+              app.classList.remove("hidden")
+            } else {
+              app.classList.add("hidden")
+              noresult.classList.remove("hidden")
+            }
           })
+        } catch(e) {
+          console.error(e.message)
         }
-        for (let person of data) {
-          let div = document.createElement("div")
-          div.classList.add("person")
-          div.innerHTML = `<img src="${person.image}"><p>${person.name} (${person.schoolName})</p>`
-          div.href = person.url
-          peopleElements.push({name:person.name,element:div,schoolID:person.schoolID,hasPhoto:person.hasPhoto})
-          app.appendChild(div)
-        }
-      }
-      
-      let data = []
-      let html = ``
-      let peopleElements = []
-      let app = document.getElementById("app")
-      let input = document.getElementById("input")
-      let searchBtn = document.getElementById("search-btn")
-      let filterBtn = document.getElementById("filter-btn")
-      let filterMenu = document.getElementById("filter-menu")
-      let searchResults = document.getElementById("searchresults")
-      
-      let schoolFilter = ["mvhs","fhs","hhs","chs","lhs"]
-      function updatePeople() {
-        let matchFound = false
-        for (let person of peopleElements) {
-          let searchMatches = person.name.toLowerCase().includes(input.value.toLowerCase().trim())
-          let schoolMatches = schoolFilter.includes(person.schoolID)
-          let hasPhotoMatches = filterMenu.querySelector("input[data-hasphoto]").checked ? person.hasPhoto : true
-          if (searchMatches && schoolMatches && hasPhotoMatches) {
-            matchFound = true
-            person.element.classList.remove("hidden")
-          } else {
-            person.element.classList.add("hidden")
-          }
-        }
-
-        if (matchFound) {
-          noresult.classList.add("hidden")
-          app.classList.remove("hidden")
-        } else {
-          app.classList.add("hidden")
-          noresult.classList.remove("hidden")
-        }
-      }
-      input.addEventListener("input", updatePeople)
-      searchBtn.addEventListener("click", (e) => {
-      	input.focus()
-      })
-      filterBtn.addEventListener("click", (e) => {
-        if (filterMenu.classList.contains("hidden")) {
-          filterMenu.classList.remove("hidden")
-          searchResults.classList.add("hidden")
-        } else {
-          filterMenu.classList.add("hidden")
-          searchResults.classList.remove("hidden")
-        }
-      })
-      filterMenu.addEventListener("click", (e) => {
-        let schoolInputElements = filterMenu.querySelectorAll("input[data-school]")
-        schoolFilter = []
-        for (let i of schoolInputElements) {
-          if (i.checked) schoolFilter.push(i.getAttribute("data-school"))
-        }
-        updatePeople()
-      })
+      })()
     </script>
   </body>
 </html>
