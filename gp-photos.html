@@ -164,6 +164,9 @@
         } catch(e) {
           console.error(e.message)
         }
+        document.getElementById("search-btn").addEventListener("click", (e) => {
+          input.focus()
+        })
       })()
     </script>
   </body>
