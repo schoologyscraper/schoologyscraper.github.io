@@ -25,6 +25,7 @@
         padding: 10px 10px 20px 10px;
         width: calc(100% - 20px);
         font-size: 20px;
+        z-index: 1000;
       }
       .searchbar .background-blur {
         position: absolute;
@@ -67,9 +68,19 @@
         background-color: #dfdfdf;
         transition: 0.3s;
       }
-      .person img {
+      .person div {
+        position: relative;
+        height: 160px;
+        width: 200px;
+        text-align: center;
+      }
+      .person div img {
         max-height: 160px;
         max-width: 200px;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
       }
       .person p {
         margin: 0;
@@ -103,6 +114,7 @@
         height: 100%;
         margin: 0;
         padding: 0;
+        z-index: 999999;
       }
       #popup-background {
         background-color: rgba(0,0,0,0.2);
@@ -118,6 +130,26 @@
         height: 80%;
         background-color: #f5f5f5;
         border-radius: 30px;
+      }
+      #popup-content div {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        text-align: center;
+      }
+      #popup-content div div {
+        position: relative;
+        overflow: scroll;
+        width: 200px;
+        height: 200px;
+      }
+      #popup-content div div img {
+        max-width: 200px;
+        max-height: 200px;
+      }
+      .gray {
+        color: #aaa;
       }
     </style>
   </head>
@@ -135,22 +167,22 @@
       </div>
     </div>
     <div id="searchresults">
-      <div class="center"><p>Database taken from <a href="https://schoologyscraper.onrender.com/">https://schoologyscraper.onrender.com</a> (this is not mine)</p></div>
+      <div class="center"><p>Database taken from <a href="https://schoologyscraper.onrender.com/">https://schoologyscraper.onrender.com</a> (this is not mine)</p><p>Click on a person for more information</p></div>
       <div id="app"></div>
       <div id="appEnd"></div>
     </div>
-    <div id="filter-menu" class="hidden">
-      <label for="checkbox-mvhs">Monta Vista</label><input id="checkbox-mvhs" type="checkbox" data-school="mvhs" checked><br>
-      <label for="checkbox-fhs">Fremont</label><input id="checkbox-fhs" type="checkbox" data-school="fhs" checked><br>
-      <label for="checkbox-hhs">Homestead</label><input id="checkbox-hhs" type="checkbox" data-school="hhs" checked><br>
-      <label for="checkbox-chs">Cupertino</label><input id="checkbox-chs" type="checkbox" data-school="chs" checked><br>
-      <label for="checkbox-lhs">Lynbrook</label><input id="checkbox-lhs" type="checkbox" data-school="lhs" checked><br>
-      <hr>
-      <label for="checkbox-hasphoto">Has Photo</label><input id="checkbox-hasphoto" type="checkbox" data-hasphoto><br>
-    </div>
-    <div id="popup">
+    <div id="popup" class="hidden">
       <div id="popup-background"></div>
       <div id="popup-content"></div>
+    </div>
+    <div id="filter-menu" class="hidden">
+      <label for="checkbox-mvhs">Monta Vista</label><input id="checkbox-mvhs" type="checkbox" data-school="Monta Vista High School" checked><br>
+      <label for="checkbox-fhs">Fremont</label><input id="checkbox-fhs" type="checkbox" data-school="Fremont High School" checked><br>
+      <label for="checkbox-hhs">Homestead</label><input id="checkbox-hhs" type="checkbox" data-school="Homestead High School" checked><br>
+      <label for="checkbox-chs">Cupertino</label><input id="checkbox-chs" type="checkbox" data-school="Cupertino High School" checked><br>
+      <label for="checkbox-lhs">Lynbrook</label><input id="checkbox-lhs" type="checkbox" data-school="Lynbrook High School" checked><br>
+      <hr>
+      <label for="checkbox-hasphoto">Has Photo</label><input id="checkbox-hasphoto" type="checkbox" data-hasphoto><br>
     </div>
 
 
@@ -162,6 +194,9 @@
       let popup = document.getElementById("popup")
       let popupBackground = document.getElementById("popup-background")
       let popupContent = document.getElementById("popup-content")
+      let filterMenu = document.getElementById("filter-menu")
+      let filterButton = document.getElementById("filter-btn")
+
       let data
       let loadedIndex = 0
       let loadBuffer = 100
@@ -172,17 +207,41 @@
         }
         let currentPeopleLoaded = 0
         let fragment = document.createDocumentFragment()
+        let schoolFilterCheckboxes = {}
+        for (let checkbox of filterMenu.querySelectorAll("[data-school]")) {
+          schoolFilterCheckboxes[checkbox.getAttribute("data-school")] = checkbox.checked
+        }
+        let searchHasPhoto = filterMenu.querySelector("[data-hasphoto]").checked
         while (currentPeopleLoaded < loadBuffer && loadedIndex < data.length) {
           let person = data[loadedIndex]
           let searchMatches = person.name.toLowerCase().includes(searchQueryElement.value.trim().toLowerCase()) || searchQueryElement.value.trim() == ""
+          let schoolMatches = false
+          let photoMatches = false
+          for (let photo of person.image) {
+            if (photo !== "https://asset-cdn.schoology.com/sites/all/themes/schoology_theme/images/user-default.svg") {
+              photoMatches = true
+              break
+            }
+          }
+          if (!searchHasPhoto) photoMatches = true
+          for (let school of person.school) {
+            if (schoolFilterCheckboxes[school]) {
+              schoolMatches = true
+              break
+            }
+          }
           ++loadedIndex
-          if (!searchMatches) {
+          if (!searchMatches || !schoolMatches || !photoMatches) {
             continue
           }
           let personDiv = document.createElement("div")
           personDiv.classList.add("person")
           personDiv.setAttribute("data-index", loadedIndex-1)
-          personDiv.innerHTML = `<img src="${person.image[0]}"></img><p>${person.name}</p>`
+          let images = ""
+          for (let i = 0; i < person.image.length; ++i) {
+            images += `<img src="${person.image[i]}" style="z-index:${person.image.length-i};opacity:${Math.max(0,1-i/3)};rotate: ${5*i}deg">`
+          }
+          personDiv.innerHTML = `<div>${images}</div><p>${person.name}</p>`
           fragment.appendChild(personDiv)
             ++currentPeopleLoaded
         }
@@ -217,14 +276,34 @@
         let dataIndex = e.target.closest("[data-index]")
         if (dataIndex) {
           dataIndex = parseInt(dataIndex.getAttribute("data-index"))
-          let jsonData = JSON.parse(data[dataIndex])
+          let jsonData = data[dataIndex]
           popup.classList.remove("hidden")
           document.body.style.overflow = "hidden"
+          let images = ""
+          for (let image of jsonData.image) {
+            images += `<img src="${image}">`
+          }
+          popupContent.innerHTML = `<div><div>${images}</div><p>${jsonData.name}</p><p>${jsonData.school.map(e=>e.trim()).join(", ")}</p><a href="https://fuhsd.schoology.com/user/${jsonData.id}/info">Schoology ID: ${jsonData.id}</a><p class="gray">Courses: ${jsonData.courses}</p><p class="gray">Groups: ${jsonData.groups}</p></div>`
         }
       })
       popupBackground.addEventListener("click", (e) => {
         popup.classList.add("hidden")
+        searchresults.classList.remove("hidden")
         document.body.style.overflow = "scroll"
+      })
+      filterButton.addEventListener("click", (e) => {
+        if (filterMenu.classList.contains("hidden")) {
+          filterMenu.classList.remove("hidden")
+          searchresults.classList.add("hidden")
+        } else {
+          filterMenu.classList.add("hidden")
+          searchresults.classList.remove("hidden")
+        }
+      })
+      filterMenu.addEventListener("click", (e) => {
+        loadedIndex = 0
+        appElement.innerHTML = ""
+        load()
       })
     </script>
   </body>
