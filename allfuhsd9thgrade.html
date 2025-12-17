@@ -193,7 +193,7 @@
           let div = document.createElement("div")
           div.classList.add("person")
           div.innerHTML = `<img src="${person.image}"><p>${person.name} (${person.schoolName})</p>`
-          div.href = person.url
+          div.setAttribute("data-url", person.url)
           peopleElements.push({name:person.name,element:div,schoolID:person.schoolID,hasPhoto:person.hasPhoto})
           app.appendChild(div)
         }
@@ -252,6 +252,12 @@
           if (i.checked) schoolFilter.push(i.getAttribute("data-school"))
         }
         updatePeople()
+      })
+      app.addEventListener("click", (e) => {
+        let closest = e.target.closest("[data-url]")
+        if (closest) {
+          open(closest.getAttribute("data-url"))
+        }
       })
     </script>
   </body>
