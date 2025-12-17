@@ -202,13 +202,30 @@
       <div id="popup-content"></div>
     </div>
     <div id="filter-menu" class="hidden">
-      <label for="checkbox-mvhs">Monta Vista</label><input id="checkbox-mvhs" type="checkbox" data-school="Monta Vista High School" checked><br>
-      <label for="checkbox-fhs">Fremont</label><input id="checkbox-fhs" type="checkbox" data-school="Fremont High School" checked><br>
-      <label for="checkbox-hhs">Homestead</label><input id="checkbox-hhs" type="checkbox" data-school="Homestead High School" checked><br>
-      <label for="checkbox-chs">Cupertino</label><input id="checkbox-chs" type="checkbox" data-school="Cupertino High School" checked><br>
-      <label for="checkbox-lhs">Lynbrook</label><input id="checkbox-lhs" type="checkbox" data-school="Lynbrook High School" checked><br>
+      <h2>Filter:</h2>
+      <input id="checkbox-mvhs" type="checkbox" data-school="Monta Vista High School" checked><label for="checkbox-mvhs">Monta Vista</label><br>
+      <input id="checkbox-fhs" type="checkbox" data-school="Fremont High School" checked><label for="checkbox-fhs">Fremont</label><br>
+      <input id="checkbox-hhs" type="checkbox" data-school="Homestead High School" checked><label for="checkbox-hhs">Homestead</label><br>
+      <input id="checkbox-chs" type="checkbox" data-school="Cupertino High School" checked><label for="checkbox-chs">Cupertino</label><br>
+      <details>
+        <summary>Other</summary>
+        <input id="checkbox-fsd" type="checkbox" data-school="FUHSD Staff Directory"><label for="checkbox-fsd">FUHSD Staff Directory</label><br>
+        <input id="checkbox-fuhsd" type="checkbox" data-school="Fremont Union High School District"><label for="checkbox-fuhsd">Fremont Union High School District</label><br>
+        <input id="checkbox-tfs" type="checkbox" data-school="TEST FUHSD School"><label for="checkbox-tfs">TEST FUHSD School</label><br>
+        <input id="checkbox-eo" type="checkbox" data-school="Educational Options"><label for="checkbox-eo">Educational Options</label><br>
+        <input id="checkbox-is" type="checkbox" data-school="Independent Study"><label for="checkbox-is">Independent Study</label><br>
+        <input id="checkbox-cds" type="checkbox" data-school="Community Day School"><label for="checkbox-cds">Community Day School</label><br>
+        <input id="checkbox-mc" type="checkbox" data-school="Middle College"><label for="checkbox-mc">Middle College</label><br>
+        <input id="checkbox-fss" type="checkbox" data-school="FUHSD Summer School"><label for="checkbox-fss">FUHSD Summer School</label><br>
+        <input id="checkbox-fas" type="checkbox" data-school="FUHSD Adult School"><label for="checkbox-fas">FUHSD Adult School</label><br>
+      </details>
       <hr>
-      <label for="checkbox-hasphoto">Has Photo</label><input id="checkbox-hasphoto" type="checkbox" data-hasphoto><br>
+      <input id="checkbox-hasphoto" type="checkbox" data-hasphoto checked><label for="checkbox-hasphoto">Has Photo</label><br>
+      <hr>
+      <h2>Sort by</h2>
+      <input id="checkbox-reverse" type="checkbox" data-sort-reversed><label for="checkbox-reverse">Reversed</label><br>
+      <input id="checkbox-schoologyID" type="radio" data-sort="schoologyID" name="filter-sort"><label for="checkbox-schoologyID">Schoology ID</label><br>
+      <input id="checkbox-alphabetically" type="radio" data-sort="alphabetically" name="filter-sort" checked><label for="checkbox-alphabetically">Alphabetically</label>
     </div>
 
 
@@ -222,7 +239,9 @@
       let popupContent = document.getElementById("popup-content")
       let filterMenu = document.getElementById("filter-menu")
       let filterButton = document.getElementById("filter-btn")
+      document.getElementById("search-btn").addEventListener("click", (e) => {
 
+      })
       let data
       let loadedIndex = 0
       let loadBuffer = 100
@@ -251,7 +270,7 @@
           }
           if (!searchHasPhoto) photoMatches = true
           for (let school of person.school) {
-            if (schoolFilterCheckboxes[school]) {
+            if (schoolFilterCheckboxes[school.trim()]) {
               schoolMatches = true
               break
             }
@@ -276,6 +295,7 @@
       (async function() {
         try {
           data = (await (await fetch("https://securecentrix81.github.io/schoologyscraper/2025-09-14.json")).json()).students
+          sortData()
           load()
           let lastLoadTime = 0
           let observer = new IntersectionObserver(() => {
@@ -312,17 +332,17 @@
           let leftSVG = `
 <?xml version="1.0" encoding="utf-8"?><!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
 <svg width="40px" height="40px" viewBox="-19.04 0 75.803 75.803" xmlns="http://www.w3.org/2000/svg">
-  <g id="Group_64" data-name="Group 64" transform="translate(-624.082 -383.588) ">
-    <path id="Path_56" data-name="Path 56" d="M660.313,383.588a1.5,1.5,0,0,1,1.06,2.561l-33.556,33.56a2.528,2.528,0,0,0,0,3.564l33.556,33.558a1.5,1.5,0,0,1-2.121,2.121L625.7,425.394a5.527,5.527,0,0,1,0-7.807l33.556-33.559A1.5,1.5,0,0,1,660.313,383.588Z" fill="#000000"/>
-  </g>
-</svg>`
+<g id="Group_64" data-name="Group 64" transform="translate(-624.082 -383.588) ">
+<path id="Path_56" data-name="Path 56" d="M660.313,383.588a1.5,1.5,0,0,1,1.06,2.561l-33.556,33.56a2.528,2.528,0,0,0,0,3.564l33.556,33.558a1.5,1.5,0,0,1-2.121,2.121L625.7,425.394a5.527,5.527,0,0,1,0-7.807l33.556-33.559A1.5,1.5,0,0,1,660.313,383.588Z" fill="#000000"/>
+      </g>
+      </svg>`
           let rightSVG = `
 <?xml version="1.0" encoding="utf-8"?><!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
 <svg width="40px" height="40px" viewBox="-19.04 0 75.803 75.803" xmlns="http://www.w3.org/2000/svg">
-  <g id="Group_64" data-name="Group 64" transform="rotate(180 18.8615 37.9015) translate(-624.082 -383.588) ">
-    <path id="Path_56" data-name="Path 56" d="M660.313,383.588a1.5,1.5,0,0,1,1.06,2.561l-33.556,33.56a2.528,2.528,0,0,0,0,3.564l33.556,33.558a1.5,1.5,0,0,1-2.121,2.121L625.7,425.394a5.527,5.527,0,0,1,0-7.807l33.556-33.559A1.5,1.5,0,0,1,660.313,383.588Z" fill="#000000"/>
-  </g>
-</svg>`
+<g id="Group_64" data-name="Group 64" transform="rotate(180 18.8615 37.9015) translate(-624.082 -383.588) ">
+<path id="Path_56" data-name="Path 56" d="M660.313,383.588a1.5,1.5,0,0,1,1.06,2.561l-33.556,33.56a2.528,2.528,0,0,0,0,3.564l33.556,33.558a1.5,1.5,0,0,1-2.121,2.121L625.7,425.394a5.527,5.527,0,0,1,0-7.807l33.556-33.559A1.5,1.5,0,0,1,660.313,383.588Z" fill="#000000"/>
+      </g>
+      </svg>`
           popupContent.innerHTML = `<div><div><div class="arrowsymbol left" disabled>${leftSVG}</div><div class="popup-image"><img src="${jsonData.image[0].replace("profile_reg","profile_big")}"></div><div class="arrowsymbol right"${jsonData.image.length > 1?"":" disabled"}>${rightSVG}</div></div><p>${jsonData.name}</p><p>${jsonData.school.map(e=>e.trim()).join(", ")}</p><a href="https://fuhsd.schoology.com/user/${jsonData.id}/info">Schoology ID: ${jsonData.id}</a><p class="gray">Courses: ${jsonData.courses}</p><p class="gray">Groups: ${jsonData.groups}</p></div>`
         }
       })
@@ -362,7 +382,37 @@
           searchresults.classList.remove("hidden")
         }
       })
+      function sortData() {
+        let sortMethod = ""
+        for (let element of document.querySelectorAll("[data-sort]")) {
+          if (element.checked) sortMethod = element.getAttribute("data-sort")
+        }
+        if (sortMethod === "alphabetically") {
+          data = data.sort((a, b) => a.name.localeCompare(b.name))
+        }
+        if (sortMethod === "schoologyID") {
+          data = data.sort((a, b) => a.id-b.id)
+        }
+        if (document.querySelector("[data-sort-reversed]").checked) {
+          data.reverse()
+        }
+      }
+      let lastSort = ""
+      let lastSortReversed = document.querySelector("[data-sort-reversed]").checked
+      for (let element of document.querySelectorAll("[data-sort]")) {
+        if (element.checked) lastSort = element.getAttribute("data-sort")
+      }
       filterMenu.addEventListener("click", (e) => {
+        let sortMethod = ""
+        let sortReversed = document.querySelector("[data-sort-reversed]").checked
+        for (let element of document.querySelectorAll("[data-sort]")) {
+          if (element.checked) sortMethod = element.getAttribute("data-sort")
+        }
+        if (lastSort !== sortMethod || lastSortReversed !== sortReversed) {
+          lastSortReversed = sortReversed
+          lastSort = sortMethod
+          sortData()
+        }
         loadedIndex = 0
         appElement.innerHTML = ""
         load()
