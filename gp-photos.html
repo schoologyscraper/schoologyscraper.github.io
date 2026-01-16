@@ -137,7 +137,7 @@
           for (let i = 0; i < database.length; i += 2) {
             let person = document.createElement("div")
             person.classList.add("person")
-            let url = `https://res.cloudinary.com/dvypvyzfe/image/upload/${database[i]}.png`
+            let url = `https://i.ibb.co/${database[i]}.png`
             person.innerHTML = `<img src="${url}"><p>${database[i+1]}</p>`
             app.appendChild(person)
             people.push({element:person,name:database[i+1],url:url})
